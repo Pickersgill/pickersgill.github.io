@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="../favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="../_app/immutable/assets/0.d12ce632.css" rel="stylesheet">
+		<link href="../_app/immutable/assets/baldwin.0d88fd69.css" rel="stylesheet">
+		<link rel="modulepreload" href="../_app/immutable/entry/start.9e1d4939.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/scheduler.e9b79cf6.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/singletons.35f1ff1b.js">
+		<link rel="modulepreload" href="../_app/immutable/entry/app.4e2f46d8.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/preload-helper.a4192956.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/index.d7ef2721.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/0.4736c764.js">
+		<link rel="modulepreload" href="../_app/immutable/nodes/5.57cf01d5.js">
+		<link rel="modulepreload" href="../_app/immutable/chunks/baldwin.53528042.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <title data-svelte-h="svelte-1iwj961">Cantrip - Jack Pellen-Pickersgill</title> <main class="container"><nav data-svelte-h="svelte-1ma4xu8"><ul><li><a href="/">Home</a></li> <li><a href="/about">About</a></li> <li><a href="/blog">Blog</a></li> <li><a href="/contact">Contact</a></li> <li><a href="/cv">CV</a></li></ul></nav> <hr> <main class="container"><main><h1>Imaginary Orangutans and the Baldwin Effect</h1> <b>Posted: 11/07/2024</b> <p>Most people are familiar with the notion of natural selection, a process by which genetic change takes place within a population over many generations based on fitness. The driving         principle of natural selection is that good genes will outlive and outproduce bad genes eventually resulting in a well adapted population. In this blog I'll attempt to         address the effect individual learning has on evolution, a phenomenon known as the Baldwin Effect, and elaborate on a simulation model for observing this effect.     </p> <p data-svelte-h="svelte-4za0d3">The existence of the Baldwin Effect has long since been
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2666683/">fairly well proven</a> and was first brought to my attention
+            by Geoffrey Hinton and Steven Nowlan&#39;s paper, 
+            <a href="https://www.cs.toronto.edu/~hinton/absps/evolution.htm">How Learning Can Guide Evolution</a>.
+            Even at the time of its writing (1987) the existence of the Baldwin Effect was not particularly up for debate having first been
+            proposed 100 years earlier in 1886 (by the eponemous James Baldwin) and eventually accepted as part of the 
+            <a href="https://en.wikipedia.org/wiki/Modern_synthesis_(20th_century)">Modern Synthesis</a>. However, their contribution of a simple
+            model which is still capabale of demonstrating the Baldwin Effect provides a good platform for going slightly beyond intuition and 
+            persuading yourself of its existence.</p> <p data-svelte-h="svelte-1g9iw2b">Hinton and Nowlan&#39;s model is not without flaw, it is extremely abstract. To try and alleviate this I&#39;m going to try and break this post into two
+            parts. First, a simplified example designed
+            to build basic intuition about the Baldwin Effect. Second, an outline of Hinton and Nowlan&#39;s model which builds upon this intuition.</p> <h2 data-svelte-h="svelte-1x7e1sj">Part 1: An Example</h2> <p data-svelte-h="svelte-r1pnx9">Lets imagine a population of Orangutans that can vary genetically based on two genes:</p> <ul style="margin: 11px" data-svelte-h="svelte-1qpmrz5"><li>Gene 1, Spotting: Ability to spot <a href="https://en.wikipedia.org/wiki/Durian">durian trees</a></li> <li>Gene 2, Digesting: Ability to effectively digest durian</li></ul> <p data-svelte-h="svelte-1jov4n8">And then assume that each gene has alleles (forms that gene may take, e.g. eye colours) ranging from &quot;weak&quot; to &quot;strong&quot;. It&#39;s fairly obvious that some combinations of these two 
+            genes will be the best, lets simplify them in a table:</p> <table style="margin: 10px" class="svelte-16el7ui" data-svelte-h="svelte-9nw7tk"><tr><td class="head svelte-16el7ui"></td> <td class="head svelte-16el7ui">Strong Spotter</td> <td class="head svelte-16el7ui">Weak Spotter</td></tr> <tr><td class="head svelte-16el7ui">Strong Digestor</td> <td class="svelte-16el7ui">A.) Very healthy! Lots of durian, lots of digestion.</td> <td class="svelte-16el7ui">B.) Okay. Not a lot of durian, great digestion.</td></tr> <tr><td class="head svelte-16el7ui">Weak Digestor</td> <td class="svelte-16el7ui">C.) Okay. Lots of durian, bad digestion.</td> <td class="svelte-16el7ui">D.) Oh no. Not a lot of durian, bad digestion.</td></tr></table> <br> <p data-svelte-h="svelte-1pp9ocu">So an Orangutan who is <b>awful</b> at finding
+            durian trees but <b>amazing</b> at digesting durians would be type B, lets call this (rather unfortunate) orangutan Beni. This seems a
+            pretty unlucky combination of genes and certainly if genes alone where responsible for behaviour Beni would have a pretty bad time exploiting his excellent durian-digesting
+            abilities. But we know this isn&#39;t true, throughout his life Beni can <b>learn</b> to become a better durian tree spotter. Even if he only reaches an adequate level of
+            durian-spotting he&#39;s able to get so much nutrients from each durian that he ends up having a reproductively successful life. This is great news. Beni&#39;s durian digestion gene,
+            which might otherwise have been lost, is preserved in the population!</p> <p data-svelte-h="svelte-nbgbu">This is, roughly, the notion of the Baldwin Effect. Beni&#39;s ability to learn behaviour had a direct effect on the genetic makeup of the population. It is worth noting that
+            orangutans display not only individual but <b>social learning</b> with knowledge being passed down from parents to offspring. This type of
+            <a href="https://en.wikipedia.org/wiki/Memetics">cultural or memetic evolution</a> will be ignored for now to better focus the discussion on demonstrating the Baldwin Effect in
+            code. Maybe it will appear in a later blog!</p> <p data-svelte-h="svelte-al83bd">If you&#39;ve read up to this point then I hope, at the very least, the promise of this blogs title is somewhat fulfilled. So if 
+            you are satisfied just to have learned what the Baldwin Effect is and perhaps gained some new-found perspective on the complexities of evolutionary 
+            processes then feel free to skip to the <a href="#conclusion">conclusions</a> and stop here!</p> <h2 data-svelte-h="svelte-15ogqz2">Part 2: Hinton and Nowlan&#39;s Model</h2> <p data-svelte-h="svelte-9yjpce">Now we&#39;ve got an idea of what the Baldwin Effect is we can address the question of how best to design an evolutionary model which can demonstrate it. Hinton and Nowlan present
+        a model which is just complex enough to do just this whilst still being easy to implement and explain:</p> <ul data-svelte-h="svelte-jyk1o6"><li>Instead of just two genes, each member of the population has 20 genes</li> <li>Each gene has three alternate forms: <b>0</b>, <b>1</b> and <b>?</b> and corresponds to an edge in a small Neural Network<sup><a href="#fn1" id="ref1">1</a></sup></li> <ul class="sublist svelte-16el7ui"><li class="svelte-16el7ui"><b>0</b>s represent deactivated edges along which neural signals are blocked</li> <li class="svelte-16el7ui"><b>1</b>s represent activated edges along which neural signals can pass</li> <li class="svelte-16el7ui"><b>?</b>s represent edges which may be either active or inactive</li></ul></ul> <figure style="width: 50%; margin: auto" data-svelte-h="svelte-1wf6f5m"><img src="/_app/immutable/assets/bin_net.7aa9fcb2.png" alt="A diagram showing the correspondence between each genetic value and its respective edge."> <figcaption>An example of how a specific genetic sequence is expressed as a network.</figcaption></figure> <p data-svelte-h="svelte-x70cw">The <b>0</b> and <b>1</b> genes cannot be altered but <b>?</b> genes can essentially be chosen by the organism. This assignment of <b>?</b> genes is the analog for individual
+        learning and thus the learning task of each organism is to find the assignment of <b>?</b> genes which maximizes their performance.</p> <figure style="width: 50%; margin: auto" data-svelte-h="svelte-1j07eex"><img src="/_app/immutable/assets/learning.aa49b45f.png" alt="A diagram showing the change in a genetic seqence before and after an assignment of ? genes."> <figcaption>A genetic sequence before and after &quot;learning&quot;.</figcaption></figure> <br> <p data-svelte-h="svelte-1lnfyj2">For their experiment Hinton and Nowlan suppose that the network performs best when fully activated, a genetic sequence of only <b>1</b> genes. This extreme choice of optima is 
+            intentional and was chosen to make demonstration easier. Now we have a genetic model which facilitates some notion of individual learning we need an environment to embed
+            this model in, an Evolutionary Game.</p> <h3 data-svelte-h="svelte-8orfmk">The Evolutionary Game Framework</h3> <p data-svelte-h="svelte-1wpw1bm"><a href="https://en.wikipedia.org/wiki/Evolutionary_game_theory">Evolutionary Games</a> extend the standard Game Theoretic model of competing organisms (henceforth &quot;players&quot;)
+            within a population
+            to allow for multiple generations of players whose strategies may evolve over time. Each player participates in a series of <b>rounds</b> receiving some reward based on how successful
+            they are in each round. Each sequence of rounds forms a <b>generation</b>. After each generation a <b>reproductive process</b> is applied determining the genetic makeup of the next
+            generation. Lets elaborate on each of these aspects (rounds, generations and reproductive processes) so we can better understand the model as a whole.</p> <h4 data-svelte-h="svelte-1lhf8q7">Rounds</h4> <p data-svelte-h="svelte-3vsv7i">In each round a player applies their strategy and receives some reward based on how good that strategy is. So for our model a strategy is a player&#39;s genetic
+            sequence and a player wont receive any reward unless their strategy is exactly the optima, all <b>1</b>s. For simplicity we&#39;ll give 1 reward in this case and 0 otherwise.
+            Our players will employ a very simple (and very dumb) random guessing strategy where they assign their <b>?</b>s at random until they get some reward, after this point
+            they never change their strategy again.</p> <h4 data-svelte-h="svelte-1ud4imj">Generations</h4> <p data-svelte-h="svelte-6iwrt0">A generation is a series of rounds, between each round the players can alter their strategies (assign <b>?</b>s). Reward accumulates over each generation so the earlier a player 
+            learns the correct sequence the better, a player who only figures out
+            the best sequence on round 99 out of 100 will get just 1 reward for the whole generation.</p> <h4 data-svelte-h="svelte-d33wft">Reproductive Process</h4> <p data-svelte-h="svelte-1cxcz76">After each generation the reward received by a player is used to determine how likely they are to have offspring in the next generation. To give an example, if the total reward earned by all players in a generation is 100
+            and a single player earns 50 reward, we would expect some of their genes to appear in 50% of the next generations players.
+            Players reproduce in pairs via splicing of their genetic sequences where a random cutoff determines how much of each parents&#39; sequence is present
+            in the child. It&#39;s worth remembering that parent selection and reproduction is still a random process, so the best performing player is not guaranteed to reproduce, nor is the worst performing guarenteed not to.</p> <figure style="width: 50%; margin: auto" data-svelte-h="svelte-wwr1vm"><img src="/_app/immutable/assets/repro.ce5e1ad6.png" alt="A diagram showing the change in a genetic seqence before and after an assignment of ? genes."> <figcaption>An example of two genetic sequences being spliced together.</figcaption></figure> <p data-svelte-h="svelte-r4an49">So to summarise, our evolutionary game goes something like this:</p> <ol style="text-align: centre; list-style-position: inside;" data-svelte-h="svelte-liymms"><li>Generate an initial population with random genetic sequences</li> <li>Players submit <b>?</b> assignments each round until the generation ends</li> <li>The reproductive process is applied based on the rewards for this generation</li> <li>Go back to step 2 with the newly produced generation</li></ol> <h3 data-svelte-h="svelte-1dkpumy">Using the Model, Experiments</h3> <p data-svelte-h="svelte-174e9sd">So what are the results of actually simulating this model? Well, both of the following graphs show a population of 1000 players
+            simulated over 30 generations of 1000 rounds with a genetic sequence length of 20. These parameters are taken from one of Hinton and Nowlans
+            own experiments (<a href="https://www.complex-systems.com/abstracts/v01_i03_a06/">found here</a>). The graph on the left shows the results
+            when starting from an initial gene pool, made up of 50% <b>?</b> genes and 25% each of <b>0</b> and <b>1</b> genes. The graph on the right shows
+            a population who have no learnable (<b>?</b>) genes:</p> <p data-svelte-h="svelte-1gq5a7l"><img width="49%" src="/_app/immutable/assets/baldwingraph.594ebb18.png" alt="A graph showing the proportion of each gene type (0, 1, ?) in the population across generations."> <img width="49%" src="/_app/immutable/assets/badbaldwingraph.da65054a.png" alt="A graph showing the proportion of each gene type (0, 1, ?) in the population across generations when learning is not present."></p> <p data-svelte-h="svelte-1bzny6t">The difference is quite stark (as you might expect) and in fact the non-learning population <b>never</b> discovers the optimal sequence.
+            On the other hand the learning population is able to find the optima with relative ease and then stabilise
+            within a genetic landscape where the optima can be consistently achieved. It is essentially this ability to reach the optima not simply by
+            finding the single genetic optima but by reaching a <b>genetic region</b> of &quot;near-optimal&quot; sequences which can then be exploited which
+            smooths the genetic search space, causing the Baldwin Effect.</p> <h2 id="conclusion" data-svelte-h="svelte-19f97gj">Conclusions and Further Resources</h2> <p data-svelte-h="svelte-1kvump1">I hope at the very least that this post helped to introduce you to some new evolutionary ideas. Darwin&#39;s
+            theory is an extremely important scientific contribution and even a very basic understanding 
+            of it offers a pretty solid perspective on evolution. That being said, as with most things, evolution is
+            quite complex and I think exploring different facets and forms of evolution helps to develop a better 
+            appreciation for just how impressive and fascinating it can be.</p> <p data-svelte-h="svelte-cpo8xf">They say you don&#39;t really understand something until you&#39;ve implemented it and to that end I made an
+            effort to produce a minimal implementation of this model in Python, you can find it 
+            <a href="https://github.com/Pickersgill/Baldwin">here</a>.
+            Additionally, many of the resources used in this post are taken from
+            <a href="/Baldwin_Effect_Presentation.pdf">this presentation</a> which I produced on the same 
+            topic.</p> <hr> <sup id="fn1" data-svelte-h="svelte-8pkrd1">1. An understanding of NNs or Deep Learning is not required to understand this post. An NN was chosen by Hinton and Nowlan likely because of its
+            generalisability and (at the time more relevant) supposed relatedness to biological brain structure. It could been almost any structure or policy encodable
+            by a string of only 3 symbols.<a href="#ref1" title="Jump back to footnote 1 in the text.">↩</a></sup></main> </main></main> <footer style="text-align: center; margin-top: 2%"><hr> <p>Jack Pellen-Pickersgill, last edited Thu Jul 11 2024  :wq</p></footer> 
+			
+			<script>
+				{
+					__sveltekit_kvpqt4 = {
+						base: new URL("..", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("../_app/immutable/entry/start.9e1d4939.js"),
+						import("../_app/immutable/entry/app.4e2f46d8.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
